@@ -9,21 +9,23 @@
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+        <!-- CSS -->
+        <link rel="stylesheet" href="/static/main.css">
+
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+
         <!-- Firebase auth button CSS and JS -->
         <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
 
-        <link rel="stylesheet" href="/static/main.css">
+        <!-- D3.js and C3.js -->
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <link href="/static/c3.css" rel="stylesheet" type="text/css">
+        <script src="/static/c3.js"></script>
     </head>
 
     <body>
-        <script>
-            function signOut() {
-                auth.signOut();
-                window.location = "/";
-            }
-        </script>
-
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -38,8 +40,10 @@
             </div>
         </nav>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+        <div class="container" id="graph-container">
+            <div id="graph"></div>
+        </div>
+
         <script>
             // Initialize Firebase
             var config = {
@@ -52,7 +56,71 @@
             firebase.initializeApp(config);
             var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
+
+            databaseRef.on("value", function(snapshot) {
+                var rawData = snapshot.val();
+                cleanedData = cleanData(rawData);
+                binnedData = binData(cleanedData, 10);
+
+                makeHistogram(binnedData);
+            });
+
+            function cleanData(data) {
+                var results = [];
+                for (var userId in data) {
+                    var person = data[userId];
+                    if (person.confidence) {
+                        results.push(person.confidence);
+                    }
+                }
+
+                return results;
+            }
+
+            function countData(data) {
+                var counts = {};
+                for (var i in data) {
+                    var n = data[i];
+                    if (!counts[n]) {
+                        counts[n] = 0;
+                    }
+                    counts[n] += 1;
+                }
+
+                var result = [];
+                for (var key in counts) {
+                    result.push(counts[key]);
+                }
+
+                return result;
+            }
+
+            function binData(data, bins) {
+                var max = Math.max.apply(Math, data);
+                var binSize = Math.floor(max / bins);
+
+                for (var i in data) {
+                    data[i] = Math.floor(data[i] / binSize) * binSize;
+                }
+
+                return data;
+            }
+
+            function makeHistogram(data) {
+                data.unshift("label");
+                var chart = c3.generate({
+                    bindto: "#graph",
+                    data: {
+                        columns: [data],
+                        types: {label: 'area-spline'}
+                    }
+                });
+            }
+
+            function signOut() {
+                auth.signOut();
+                window.location = "/";
+            }
         </script>
-        <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
     </body>
 </html>
