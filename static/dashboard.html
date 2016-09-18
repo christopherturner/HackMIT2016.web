@@ -87,7 +87,7 @@
                     childKeys.splice(index,1);
                 }
                 var cleaned = cleanData(chartData);
-                updateHistogram(fuzzify(cleaned, 5, 100));
+                updateHistogram(fuzzify(cleaned, 1, 100));
             }
 
             function gaussian(x, sigma) {
