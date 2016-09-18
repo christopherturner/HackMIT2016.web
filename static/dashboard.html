@@ -90,16 +90,18 @@
             
             function handleSnapshot(snap){
                 index = childKeys.indexOf(snap.key);
-                if(snap.val().active){
-                    chartData[index] = snap.val().confidence;
+                if(snap.val() != null){
+                    if(snap.val().active){
+                        chartData[index] = snap.val().confidence;
+                    }
+                    else{
+                        snap.ref.remove();
+                        chartData.splice(index,1);
+                        childKeys.splice(index,1);
+                    }
+                    var cleaned = cleanData(chartData);
+                    updateHistogram(fuzzify(cleaned, 2, 100));
                 }
-                else{
-                    snap.ref.remove();
-                    chartData.splice(index,1);
-                    childKeys.splice(index,1);
-                }
-                var cleaned = cleanData(chartData);
-                updateHistogram(fuzzify(cleaned, 2, 100));
             }
 
             function gaussian(x, sigma) {
