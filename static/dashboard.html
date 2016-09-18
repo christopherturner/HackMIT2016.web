@@ -143,11 +143,7 @@
 
             function updateHistogram(data) {
                  if(chart != undefined){
-                     for(var i=0; i<data.length; i++){
-                        if(chart.series[0].points[i].y != data[i]){
-                             chart.series[0].points[i].update({"y": data[i]});
-                        }
-                     }
+                    chart.series[0].setData(data); 
                  }
             }
 
