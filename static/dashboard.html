@@ -166,7 +166,29 @@
                             data: []
                     }],
                      xAxis: {
-                         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                         plotBands: [{
+                            from: 0,
+                            to: 20,
+                            color: 'rgba(68, 170, 213, 0.1)',
+                            label: {
+                                text: 'Solid',
+                                style: {
+                                    color: '#606060'
+                                }
+                             },
+                         },
+                         {
+                            from: 20,
+                            to: 40,
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            label: {
+                                text: 'OK',
+                                style: {
+                                    color: '#606060'
+                                }
+                             },
+
+                         }
                      },
                     yAxis: {
                         enabled: false
