@@ -62,7 +62,7 @@
                 messagingSenderId: "1016554614413"
             };
             firebase.initializeApp(config);
-            var databaseRef = firebase.database().ref;
+            var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
             var chartData = [];
             var childRefs = [];
