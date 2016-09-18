@@ -60,9 +60,9 @@
             databaseRef.on("value", function(snapshot) {
                 var rawData = snapshot.val();
                 cleanedData = fuzzify(cleanData(rawData), 5, 100);
-                binnedData = binData(cleanedData, 10);
+                //binnedData = binData(cleanedData, 10);
 
-                makeHistogram(binnedData);
+                makeHistogram(cleanedData);
             });
 
             function fuzzify(points, fuzzy_factor, size) {
