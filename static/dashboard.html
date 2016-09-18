@@ -19,10 +19,18 @@
         <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
 
-        <!-- D3.js and C3.js -->
+        <!-- D3.js and C3.js
         <script src="https://d3js.org/d3.v3.min.js"></script>
         <link href="/static/c3.css" rel="stylesheet" type="text/css">
         <script src="/static/c3.js"></script>
+        -->
+
+        <!-- jQuery -->
+        <script   src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        
+        <!-- HighCharts -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
     </head>
 
     <body>
@@ -119,14 +127,14 @@
             }
 
             function makeHistogram(data) {
-                data.unshift("label");
-                var chart = c3.generate({
-                    bindto: "#graph",
-                    data: {
-                        columns: [data],
-                        types: {label: 'area-spline'}
-                    }
-                });
+                $('#graph-container').highcharts({
+                    chart: {
+                        type: 'areaspline'
+                    },
+                    series: [{
+                        name: 'John',
+                        data: [3, 4, 3, 5, 4, 10, 12]
+                    }]
             }
 
             function signOut() {
