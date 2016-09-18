@@ -75,12 +75,15 @@
                 handleSnapshot(snapshot); 
             });
             
-            function handleSnapshot(snap, index){
+            function handleSnapshot(snap){
+                index = childRefs.indexOf(snap.ref());
                 if(snap.val().active){
-                    chartData[childRefs.indexOf(snap.ref())] = snap.val().confidence;
+                    chartData[index] = snap.val().confidence;
                 }
                 else{
-                    delete chartData[childRefs.indexOf(snap.ref())];
+                    snapshot.ref().remove();
+                    chartData.splice(index,1);
+                    childRefs.splice(index,1);
                 }
                 makeHistogram(fuzzify(cleanData(chartData)));
             }
