@@ -99,7 +99,7 @@
                 var max = Math.max.apply(Math, data);
                 var binSize = Math.floor(max / bins);
 
-                for (var i in data) {
+                for (var i=0; i<data.length; i++) {
                     data[i] = Math.floor(data[i] / binSize) * binSize;
                 }
 
