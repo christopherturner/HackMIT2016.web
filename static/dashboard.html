@@ -56,28 +56,7 @@
                         <h3 class="panel-title">Classroom chat</h3>
                     </div>
                     <div class="panel-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
+                        <ul class="list-group"></ul>
                     </div>
                 </div>
             </div>
@@ -93,7 +72,8 @@
                 messagingSenderId: "1016554614413"
             };
             firebase.initializeApp(config);
-            var databaseRef = firebase.database().ref();
+            var databaseRef = firebase.database().ref("users/");
+            var questionsRef = firebase.database().ref("questions/");
             var auth = firebase.auth();
             var chartData = [];
             var childKeys = [];
@@ -105,6 +85,12 @@
                    handleSnapshot(snapshot); 
                 });
                 handleSnapshot(snapshot); 
+            });
+
+            questionsRef.on("child_added", function(snapshot){
+                var data = snapshot.val();
+                var line = "<li class=i\"list-group-item\">" + data +"</li>";
+                $("#questions").append(line);
             });
             
             function handleSnapshot(snap){
