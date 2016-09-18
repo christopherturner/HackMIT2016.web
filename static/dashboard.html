@@ -66,6 +66,7 @@
             var auth = firebase.auth();
             var chartData = [];
             var childRefs = [];
+            var chart = undefined;
 
             databaseRef.on("child_added", function(snapshot) {
                 childRefs.push(snapshot.ref())
@@ -81,7 +82,7 @@
                     chartData[index] = snap.val().confidence;
                 }
                 else{
-                    snapshot.ref().remove();
+                    snap.ref().remove();
                     chartData.splice(index,1);
                     childRefs.splice(index,1);
                 }
