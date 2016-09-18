@@ -37,7 +37,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">ClassSense&trade;</a>
+                    <a class="navbar-brand" href="#">ClassSense</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -48,12 +48,17 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="page-content container">
             <div id="graph-container" class="col-sm-12 col-md-9 col-lg-9"></div>
             <div id="chat-container" class="col-sm-12 col-md-3 col-lg-3">
-                <ul class="list-group" id="questions">
-                    <li class="list-group-item active">Submit your questions</li>
-                </ul>
+                <div id="chat-box" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Classroom chat</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group"></ul>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -67,8 +72,8 @@
                 messagingSenderId: "1016554614413"
             };
             firebase.initializeApp(config);
-            var databaseRef = firebase.database().ref("users/");
-            var questionsRef = firebase.database().ref("questions/");
+            var databaseRef = firebase.database().ref("users");
+            var questionsRef = firebase.database().ref("questions");
             var auth = firebase.auth();
             var chartData = [];
             var childKeys = [];
