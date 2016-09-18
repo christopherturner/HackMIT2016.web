@@ -84,7 +84,7 @@
 
             questionsRef.on("child_added", function(snapshot){
                 var data = snapshot.val();
-                var line = "<li class=i\"list-group-item\">" + data.question +"</li>";
+                var line = "<li class=i\"list-group-item\">" + data +"</li>";
                 $("#questions").append(line);
             });
             
