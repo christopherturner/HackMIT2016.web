@@ -69,7 +69,7 @@
             var chart = undefined;
 
             databaseRef.on("child_added", function(snapshot) {
-                childRefs.push(snapshot.ref())
+                childRefs.push(snapshot.ref());
                 snapshot.ref().on("value", function(snapshot) {
                    handleSnapshot(snapshot); 
                 });
@@ -141,23 +141,29 @@
                 return data;
             }
 
-            function makeHistogram(data) {
-                $('#graph-container').highcharts({
-                    chart: {
-                        type: 'areaspline'
-                    },
-                    series: [{
-                        name: 'Students',
-                        data: data
-                    }],
-                    enableMouseTracking: false
-                });
+            function updateHistogram(data) {
+                 if(chart != undefined){
+                     for(var i=0; i<data.length; i++){
+                        if(chart.series[0].points[i].y != data[i]){
+                             chart.series[0].points[i].update({"y": data[i]});
+                        }
+                     }
+                 }
             }
 
-            function signOut() {
-                auth.signOut();
-                window.location = "/";
-            }
+            $(document).ready(function(){
+            chart = new Highcharts.Chart({
+                chart: {
+                        renderTo: 'graph-container',
+                        type: 'areaspline'
+                }
+                series: [{
+                        name: 'Students',
+                        data: []
+                }]
+                enableMouseTracking: false
+
+            });
         </script>
     </body>
 </html> 
