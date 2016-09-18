@@ -62,27 +62,27 @@
                 messagingSenderId: "1016554614413"
             };
             firebase.initializeApp(config);
-            var databaseRef = firebase.database().ref();
+            var databaseRef = firebase.database().ref;
             var auth = firebase.auth();
             var chartData = [];
             var childRefs = [];
             var chart = undefined;
 
             databaseRef.on("child_added", function(snapshot) {
-                childRefs.push(snapshot.ref());
-                snapshot.ref().on("value", function(snapshot) {
+                childRefs.push(snapshot.ref);
+                snapshot.ref.on("value", function(snapshot) {
                    handleSnapshot(snapshot); 
                 });
                 handleSnapshot(snapshot); 
             });
             
             function handleSnapshot(snap){
-                index = childRefs.indexOf(snap.ref());
+                index = childRefs.indexOf(snap.ref);
                 if(snap.val().active){
                     chartData[index] = snap.val().confidence;
                 }
                 else{
-                    snap.ref().remove();
+                    snap.ref.remove();
                     chartData.splice(index,1);
                     childRefs.splice(index,1);
                 }
