@@ -90,13 +90,20 @@
                 updateHistogram(fuzzify(cleaned, 5, 100));
             }
 
+            function gaussian(x, sigma) {
+                var gaussianConstant = 1 / Math.sqrt(2 * Math.PI),
+                mean = 0,
+                x = (x - mean) / sigma;
+                return gaussianConstant * Math.exp(-.5 * x * x) / sigma;
+            };
+
             function fuzzify(points, fuzzy_factor, size) {
                 var result = [];
                 for (var i = 0; i < size; i++) result[i] = 0;
           
                 for (var i = 0; i < points.length; i++) {
                     for (var j = -Math.min(fuzzy_factor, points[i]); j < Math.min(fuzzy_factor, result.length - points[i]); j++) {
-                        result[points[i] + j] += Math.max((fuzzy_factor - Math.pow(j,2) + Math.sqrt(Math.abs(j)))/fuzzy_factor,0);
+                        result[points[i] + j] += gaussian(j, fuzzy_factor); 
                     }
                 }
                 return result;
