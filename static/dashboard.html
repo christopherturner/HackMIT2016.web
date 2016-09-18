@@ -87,7 +87,7 @@
                     childKeys.splice(index,1);
                 }
                 var cleaned = cleanData(chartData);
-                updateHistogram(fuzzify(cleaned, 1, 100));
+                updateHistogram(fuzzify(cleaned, 2, 100));
             }
 
             function gaussian(x, sigma) {
@@ -102,7 +102,7 @@
                 for (var i = 0; i < size; i++) result[i] = 0;
           
                 for (var i = 0; i < points.length; i++) {
-                    for (var j = -Math.min(fuzzy_factor, points[i]); j < Math.min(fuzzy_factor, result.length - points[i]); j++) {
+                    for (var j = -Math.min(fuzzy_factor*3, points[i]); j < Math.min(fuzzy_factor*3, result.length - points[i]); j++) {
                         result[points[i] + j] += gaussian(j, fuzzy_factor); 
                     }
                 }
