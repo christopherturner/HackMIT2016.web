@@ -71,7 +71,7 @@
                 childRefs.push(snapshot.ref())
                 snapshot.ref().on("value", function(snapshot) {
                    handleSnapshot(snapshot); 
-                }
+                });
                 handleSnapshot(snapshot); 
             });
             
