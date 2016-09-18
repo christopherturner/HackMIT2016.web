@@ -57,7 +57,7 @@
             var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
 
-            databaseRef.on("child_added", function(snapshot) {
+            databaseRef.on("value", function(snapshot) {
                 var rawData = snapshot.val();
                 cleanedData = cleanData(rawData);
                 binnedData = binData(cleanedData, 10);
