@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>Classroom feedback</title>
+        <title>Dashboard</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -17,10 +17,26 @@
     </head>
 
     <body>
-        <div id="login-container">
-            <h2>Please log in to continue:</h2>
-            <div id="firebaseui-auth-container"></div>
-        </div>
+        <script>
+            function signOut() {
+                auth.signOut();
+                window.location = "/";
+            }
+        </script>
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Classroom Feedback&trade;</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a id="logout-button" onclick="signOut()" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
@@ -36,32 +52,7 @@
             firebase.initializeApp(config);
             var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
-
-            // Firebase auth button config
-            var uiConfig = {
-                'signInSuccessUrl': '/dashboard/',
-                'signInOptions': [
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                ]
-            };
-
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
-            ui.start('#firebaseui-auth-container', uiConfig);
-
-            auth.onAuthStateChanged(function(user) {
-                console.log("Auth state changed");
-                if (user) {
-                    console.log("User exists");
-                    $("#firebaseui-auth-container").hide();
-                } else {
-                    console.log("User does not exist");
-                    $("#firebaseui-auth-container").show();
-                }
-            });
-
-            $("#logout-button").click(function() {
-                auth.signOut();
-            });
         </script>
+        <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
     </body>
 </html>
