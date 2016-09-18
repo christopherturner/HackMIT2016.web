@@ -65,11 +65,11 @@
             var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
             var chartData = [];
-            var childRefs = [];
+            var childKeys = [];
             var chart = undefined;
 
             databaseRef.on("child_added", function(snapshot) {
-                childRefs.push(snapshot.ref);
+                childKeys.push(snapshot.key);
                 snapshot.ref.on("value", function(snapshot) {
                    handleSnapshot(snapshot); 
                 });
@@ -77,16 +77,17 @@
             });
             
             function handleSnapshot(snap){
-                index = childRefs.indexOf(snap.ref);
+                index = childKeys.indexOf(snap.key);
                 if(snap.val().active){
                     chartData[index] = snap.val().confidence;
                 }
                 else{
                     snap.ref.remove();
                     chartData.splice(index,1);
-                    childRefs.splice(index,1);
+                    childKeys.splice(index,1);
                 }
-                updateHistogram(fuzzify(cleanData(chartData)));
+                var cleaned = cleanData(chartData);
+                updateHistogram(fuzzify(cleaned, 5, 100));
             }
 
             function fuzzify(points, fuzzy_factor, size) {
@@ -95,7 +96,7 @@
           
                 for (var i = 0; i < points.length; i++) {
                     for (var j = -Math.min(fuzzy_factor, points[i]); j < Math.min(fuzzy_factor, result.length - points[i]); j++) {
-                        result[points[i] + j] += fuzzy_factor - Math.abs(j);
+                        result[points[i] + j] += Math.max((fuzzy_factor - Math.pow(j,2) + Math.sqrt(j))/fuzzy_factor,0);
                     }
                 }
                 return result;
