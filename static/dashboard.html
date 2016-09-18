@@ -86,7 +86,7 @@
                     chartData.splice(index,1);
                     childRefs.splice(index,1);
                 }
-                makeHistogram(fuzzify(cleanData(chartData)));
+                updateHistogram(fuzzify(cleanData(chartData)));
             }
 
             function fuzzify(points, fuzzy_factor, size) {
