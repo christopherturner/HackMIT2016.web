@@ -64,14 +64,26 @@
             firebase.initializeApp(config);
             var databaseRef = firebase.database().ref();
             var auth = firebase.auth();
+            var chartData = [];
+            var childRefs = [];
 
-            databaseRef.on("value", function(snapshot) {
-                var rawData = snapshot.val();
-                cleanedData = fuzzify(cleanData(rawData), 5, 100);
-                //binnedData = binData(cleanedData, 10);
-
-                makeHistogram(cleanedData);
+            databaseRef.on("child_added", function(snapshot) {
+                childRefs.push(snapshot.ref())
+                snapshot.ref().on("value", function(snapshot) {
+                   handleSnapshot(snapshot); 
+                }
+                handleSnapshot(snapshot); 
             });
+            
+            function handleSnapshot(snap, index){
+                if(snap.val().active){
+                    chartData[childRefs.indexOf(snap.ref())] = snap.val().confidence;
+                }
+                else{
+                    delete chartData[childRefs.indexOf(snap.ref())];
+                }
+                makeHistogram(fuzzify(cleanData(chartData)));
+            }
 
             function fuzzify(points, fuzzy_factor, size) {
                 var result = [];
@@ -86,11 +98,10 @@
             }
 
             function cleanData(data) {
-                var results = [];
-                for (var userId in data) {
-                    var person = data[userId];
-                    if (person.confidence) {
-                        results.push(person.confidence);
+                var result = [];
+                for(int i=0; i<data.length; i++){
+                    if(data[i] != undefined){
+                        result.push(data[i]);
                     }
                 }
 
@@ -134,7 +145,8 @@
                     series: [{
                         name: 'Students',
                         data: data
-                    }]
+                    }],
+                    enableMouseTracking: false
                 });
             }
 
