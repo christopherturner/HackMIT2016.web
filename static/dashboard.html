@@ -59,11 +59,23 @@
 
             databaseRef.on("value", function(snapshot) {
                 var rawData = snapshot.val();
-                cleanedData = cleanData(rawData);
+                cleanedData = fuzzify(cleanData(rawData), 5, 100);
                 binnedData = binData(cleanedData, 10);
 
                 makeHistogram(binnedData);
             });
+
+            function fuzzify(points, fuzzy_factor, size) {
+                var result = [];
+                for (var i = 0; i < size; i++) result[i] = 0;
+          
+                for (var i = 0; i < points.length; i++) {
+                    for (var j = -Math.min(fuzzy_factor, points[i]); j < Math.min(fuzzy_factor, result.length - points[i]); j++) {
+                        result[points[i] + j] += fuzzy_factor - Math.abs(j);
+                    }
+                }
+                return result;
+            }
 
             function cleanData(data) {
                 var results = [];
