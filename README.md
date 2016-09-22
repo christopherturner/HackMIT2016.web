@@ -1,4 +1,6 @@
-# HackMIT 2016
+# ClassSense
+
+A HackMIT 2016 project.
 
 ## Created by:
 - Halaa Menasy
